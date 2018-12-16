@@ -8,19 +8,19 @@ class Req():
         else:         # XML
             return resp.text
     def get(self,ur):
-        res = requests.get(ur,auth=self.auth_pk,headers=self.h_get)
+        res = requests.get(ur,auth=self.auth_pk,headers=self.h_get,verify=self.verify)
         return self.rtn(res)
     def post(self,ur,dt=None):
-        if dt == None: res = requests.post(ur,auth=self.auth_pk,headers=self.h_post)
-        else: res = requests.post(ur,auth=self.auth_pk,data=dt,headers=self.h_post)
+        if dt == None: res = requests.post(ur,auth=self.auth_pk,headers=self.h_post,verify=self.verify)
+        else: res = requests.post(ur,auth=self.auth_pk,data=dt,headers=self.h_post,verify=self.verify)
         return self.rtn(res)
     def put(self,ur,dt=None):
-        if dt == None: res = requests.put(ur,auth=self.auth_pk,headers=self.h_post)
-        else: res = requests.put(ur,auth=self.auth_pk,data=dt,headers=self.h_post)
+        if dt == None: res = requests.put(ur,auth=self.auth_pk,headers=self.h_post,verify=self.verify)
+        else: res = requests.put(ur,auth=self.auth_pk,data=dt,headers=self.h_post,verify=self.verify)
         return self.rtn(res)
     def delete(self,ur,dt=None):
-        if dt == None: res = requests.delete(ur,auth=self.auth_pk,headers=self.h_post)
-        else: res = requests.delete(ur,auth=self.auth_pk,data=dt,headers=self.h_post)
+        if dt == None: res = requests.delete(ur,auth=self.auth_pk,headers=self.h_post,verify=self.verify)
+        else: res = requests.delete(ur,auth=self.auth_pk,data=dt,headers=self.h_post,verify=self.verify)
         return self.rtn(res)
         
 class GroupFolders():
@@ -254,7 +254,7 @@ class NextCloud(Req,User,Group,Apps,Share,GroupFolders):
             31 -> all
         expireDate -> String e.g "YYYY-MM-DD"
     '''
-    def __init__(self, endpoint, user, passwd, js=False):
+    def __init__(self, endpoint, user, passwd, js=False, verify =True):
         self.tojs = "?format=json" if js else ""
         self.endpoint = endpoint
         User.url = endpoint + "/ocs/v1.php/cloud/users"
@@ -265,3 +265,4 @@ class NextCloud(Req,User,Group,Apps,Share,GroupFolders):
         self.h_get = {"OCS-APIRequest": "true"}
         self.h_post = {"OCS-APIRequest":"true","Content-Type":"application/x-www-form-urlencoded"}
         self.auth_pk = (user, passwd)
+        self.verify = verify
